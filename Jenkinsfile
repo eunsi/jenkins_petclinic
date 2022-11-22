@@ -20,8 +20,9 @@ pipeline {
         stage("Push image to gcr") {
             steps {
                 script {
-                    docker.withRegistry('https://gcr.io', 'gcr:My First Project') {
-                        app.push("${env.BUILD_NUMBER}")
+                    docker.withRegistry('https://us.gcr.io', 'gcr:<gcp-project-id>') {
+                        app.push("${commit_id}")
+                        app.push("latest")
         }
                 }
             }
