@@ -34,10 +34,8 @@ pipeline {
               sh "docker push asia.gcr.io/exemplary-datum-362307/petclinic:${image-tag}"
           }
                     }
-        }
+                   }
                 }
             }
-        }
-        
-    }
+        }        
 }
