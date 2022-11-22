@@ -19,16 +19,10 @@ pipeline {
           }
         stage('Push to registry') {
             steps {
-                script {
-                def build_time = new Date()
-                def sdf = new SimpleDateFormat("yyyyMMddHHmm")
-               // docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-jhwangdemo') {
-                docker.withRegistry('https://gcr.io', 'gcr:pa-jhwang') {
-                dockerImage.push("${sdf.format(build_time)}-${env.BUILD_NUMBER}")
-                dockerImage.push("latest")
-      }
-    }
-  }
-}
+             script {
+                    docker.withRegistry('https://asia.gcr.io', 'gcr:exemplary-datum-362307') {
+                        app.push("${env.BUILD_NUMBER}")
+                    }
+                }
         }        
 }
