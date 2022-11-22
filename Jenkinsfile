@@ -22,7 +22,7 @@ pipeline {
                 script {
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')
                     {
-            withCredentials([file(credentialsId: 'exemplary-datum-362307', variable: 'GC_KEY')]){
+            withCredentials([file(credentialsId: 'jenkins-gogle', variable: 'GC_KEY')]){
               sh "cat '$GC_KEY' | docker login -u _json_key --password-stdin https://gcr.io"
               sh "gcloud auth activate-service-account --key-file='$GC_KEY'"
               sh "gcloud auth configure-docker"
