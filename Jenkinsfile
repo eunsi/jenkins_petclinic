@@ -16,26 +16,19 @@ pipeline {
                     app = docker.build("exemplary-datum-362307/petclinic")
                 }
             }
-        }
-        stage("Push image to gcr") {
+          }
+        stage('Push to registry') {
             steps {
                 script {
-                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')
-                    {
-            withCredentials([file(credentialsId: 'exemplary-datum-362307', variable: 'GC_KEY')]){
-              sh "cat '$GC_KEY' | docker login -u _json_key --password-stdin https://gcr.io"
-              sh "gcloud auth activate-service-account --key-file='$GC_KEY'"
-              sh "gcloud auth configure-docker"
-              GLOUD_AUTH = sh (
-                    script: 'gcloud auth print-access-token',
-                    returnStdout: true
-                ).trim()
-              echo "Pushing image To GCR"
-              sh "docker push asia.gcr.io/exemplary-datum-362307/petclinic:${image-tag}"
-          }
-                    }
-                   }
-                }
-            }
+                def build_time = new Date()
+                def sdf = new SimpleDateFormat("yyyyMMddHHmm")
+               // docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-jhwangdemo') {
+                docker.withRegistry('https://gcr.io', 'gcr:pa-jhwang') {
+                dockerImage.push("${sdf.format(build_time)}-${env.BUILD_NUMBER}")
+                dockerImage.push("latest")
+      }
+    }
+  }
+}
         }        
 }
