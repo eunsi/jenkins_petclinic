@@ -20,7 +20,7 @@ pipeline {
         stage('Push to registry') {
             steps {
              script {
-                        docker.withRegistry('https://asia-northeast3-docker.pkg.dev', 'gcr:exemplary-datum-362307') {
+                        docker.withRegistry('https://asia.gcr.io-docker.pkg.dev', 'gcr:exemplary-datum-362307') {
                         app.push("${env.BUILD_NUMBER}")
                     }
                 }
