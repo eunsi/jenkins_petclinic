@@ -13,7 +13,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    app = docker.build("terraform-tae/fatclinic")
+                    app = docker.build("exemplary-datum-362307/fatclinic")
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
         stage("Push image to gcr") {
             steps {
                 script {
-                    docker.withRegistry('https://asia.gcr.io', 'gcr:terraform-tae') {
+                    docker.withRegistry('https://asia.gcr.io', 'gcr:exemplary-datum-362307') {
                         app.push("${env.BUILD_NUMBER}")
                     }
                 }
@@ -32,15 +32,15 @@ pipeline {
 
             steps {
 
-                git credentialsId: 'XOXOT', 
-                    url: 'https://github.com/XOXOT/ArgoCD_yaml.git',
+                git credentialsId: 'jenkins', 
+                    url: 'https://github.com/eunsi/argo_petclinic.git',
                     branch: 'main'
 
-                sh "sed -i 's/fatclinic:.*\$/fatclinic:${env.BUILD_NUMBER}/g' deploy.yaml"
-                sh "git add deploy.yaml"
-                sh "git commit -m '[UPDATE] fatclinic ${env.BUILD_NUMBER} image versioning'"
+                sh "sed -i 's/petclinic:.*\$/petclinic:${env.BUILD_NUMBER}/g' spring-boot.yaml"
+                sh "git add spring-boot.yaml"
+                sh "git commit -m '[UPDATE] petclinic ${env.BUILD_NUMBER} image versioning'"
 
-                withCredentials([gitUsernamePassword(credentialsId: 'XOXOT')]) {
+                withCredentials([gitUsernamePassword(credentialsId: 'jenkins')]) {
                     sh "git push -u origin main"
                 }
             }
