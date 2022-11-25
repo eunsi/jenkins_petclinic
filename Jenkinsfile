@@ -13,7 +13,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    app = docker.build("exemplary-datum-362307/fatclinic")
+                    app = docker.build("exemplary-datum-362307/petclinic")
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
         stage("Push image to gcr") {
             steps {
                 script {
-                    docker.withRegistry('https://asia.gcr.io', 'gcr:exemplary-datum-362307') {
+                    docker.withRegistry('https://asia-northeast3-docker.pkg.dev', 'gcr:exemplary-datum-362307/petclinictest') {
                         app.push("${env.BUILD_NUMBER}")
                     }
                 }
